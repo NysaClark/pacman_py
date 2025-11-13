@@ -29,6 +29,7 @@ class World:
 		self.player_score = 0
 		self.game_level = 1
 		self.spawned_cherries = 0
+		self.curr_cherry_count = 0
 
 		self._generate_world()
 
@@ -84,21 +85,17 @@ class World:
 
 		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
 		
-		self.spawned_cherries = 0
-		for cherry in self.cherries.sprites():
-			cherry.kill()
-		
-		# self.cherries.empty()
 		time.sleep(2)
 		
 
+	def restart_game(self):
+		[cherry.kill() for cherry in self.cherries.sprites()]
 
-	def restart_level(self):
-		self.berries.empty()
-		self.cherries.empty()
-		[ghost.move_to_start_pos() for ghost in self.ghosts.sprites()]
-		
 		self.game_level = 1
+		self.first_move_done = False
+		self.spawned_cherries = 0
+		self.curr_cherry_count = 0
+
 		self.player.sprite.pac_score = 0
 		self.player.sprite.life = 3
 		self.player.sprite.move_to_start_pos()
@@ -106,6 +103,7 @@ class World:
 		self.player.sprite.status = "idle"
 
 		for ghost in self.ghosts.sprites():
+			ghost.move_to_start_pos()
 			ghost.weak_time = 0
 			ghost.weak = False
 			ghost.respawing = False
@@ -133,21 +131,30 @@ class World:
 		# generates new level
 		if len(self.berries) == 0 and self.player.sprite.life > 0:
 			self.game_level += 1
+			self.first_move_done = False
+			
 			for ghost in self.ghosts.sprites():
-				ghost.move_speed += self.game_level
+				ghost.move_speed += (self.game_level - 1)
 				ghost.move_to_start_pos()
 				ghost.weak_time = 0
 				ghost.weak = False
+				ghost.respawing = False
+				ghost.respawn_time = 0
+
+			[cherry.kill() for cherry in self.cherries.sprites()]
+			self.spawned_cherries = 0
+			self.curr_cherry_count = 0
 
 			self.player.sprite.move_to_start_pos()
 			self.player.sprite.direction = (0, 0)
 			self.player.sprite.status = "idle"
+			
 			self.generate_new_level()
 
 
 	def spawn_cherries(self):
 		# Determine number of cherries for this level
-		max_cherries = max(0, self.game_level)
+		max_cherries = max(0, self.game_level+1)
 		# max_cherries = max(0, self.game_level - 1)
 
 		if self.spawned_cherries >= max_cherries:
@@ -174,7 +181,7 @@ class World:
 		row, col = random.choice(possible_positions)
 		self.cherries.add(Cherry(row, col))
 		self.spawned_cherries +=1
-		
+		self.curr_cherry_count +=1
 
 	def update(self):
 		if not self.game_over:
@@ -213,11 +220,14 @@ class World:
 			for cherry in self.cherries.sprites():
 				if self.player.sprite.rect.colliderect(cherry.rect):
 					self.player.sprite.pac_score += 100
+					self.curr_cherry_count -= 1
 					cherry.kill()
 
-			# Random dynamic cherry spawning
-			if random.randint(0, 1000) < 6:
-				self.spawn_cherries()
+			if self.first_move_done and self.curr_cherry_count == 0:
+				# Random dynamic cherry spawning
+				if random.randint(0, 1000) < 6:
+					self.spawn_cherries()
+
 
 
 			# PacMan bumping into ghosts
@@ -259,13 +269,21 @@ class World:
 		# reset Pac and Ghosts position after PacMan get captured
 		if self.reset_pos and not self.game_over:
 			[ghost.move_to_start_pos() for ghost in self.ghosts.sprites()]
+			[cherry.kill() for cherry in self.cherries.sprites()]
+			
 			self.player.sprite.move_to_start_pos()
 			self.player.sprite.status = "idle"
 			self.player.sprite.direction = (0,0)
+
 			self.reset_pos = False
+			
+			#TODO should the gate be placed again?
+
 			for ghost in self.ghosts.sprites():
 				ghost.weak_time = 0
 				ghost.weak = False
+				ghost.respawing = False
+				ghost.respawn_time = 0
 
 
 		# for restart button
@@ -273,7 +291,7 @@ class World:
 			pressed_key = pygame.key.get_pressed()
 			if pressed_key[pygame.K_r]:
 				self.game_over = False
-				self.restart_level()
+				self.restart_game()
 
 
 # NOTE 1 cherry is alread spawned :( at new lvl
