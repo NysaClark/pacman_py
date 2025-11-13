@@ -154,7 +154,7 @@ class World:
 
 	def spawn_cherries(self):
 		# Determine number of cherries for this level
-		max_cherries = max(0, self.game_level+1)
+		max_cherries = max(0, self.game_level)
 		# max_cherries = max(0, self.game_level - 1)
 
 		if self.spawned_cherries >= max_cherries:
