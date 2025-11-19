@@ -1,7 +1,7 @@
+# ghost.py
 import pygame
 import random
 import time
-
 from settings import WIDTH, CHAR_SIZE, GHOST_SPEED
 
 class Ghost(pygame.sprite.Sprite):

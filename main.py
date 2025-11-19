@@ -1,11 +1,15 @@
+# main.py
 import pygame, sys
 from settings import WIDTH, HEIGHT, NAV_HEIGHT
 from world import World
 
 pygame.init()
+pygame.font.init()
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT + NAV_HEIGHT))
-pygame.display.set_caption("PacMan")
+screen = pygame.display.set_mode((WIDTH, HEIGHT + (NAV_HEIGHT * 2)))
+pygame.display.set_caption("Ms. PacMan")
+
+
 
 class Main:
 	def __init__(self, screen):

@@ -1,3 +1,4 @@
+# animation.py
 from os import walk
 import pygame
 

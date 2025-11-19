@@ -1,3 +1,4 @@
+#pac.py
 import pygame
 
 from settings import CHAR_SIZE, PLAYER_SPEED
@@ -54,7 +55,7 @@ class Pac(pygame.sprite.Sprite):
 
 	def move_to_start_pos(self):
 		self.rect.x = self.abs_x
-		self.rect.y = self.abs_y
+		self.rect.y = self.abs_y 
 
 
 	# update with sprite/sheets

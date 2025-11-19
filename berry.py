@@ -1,7 +1,6 @@
+# berry.py
 import pygame
-
 from settings import CHAR_SIZE, PLAYER_SPEED
-
 
 class Berry(pygame.sprite.Sprite):
     def __init__(self, row, col, size, is_power_up=False):

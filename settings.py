@@ -1,3 +1,4 @@
+# settings.py
 MAP = [
     ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'],
 	['1',' ',' ',' ',' ','1',' ',' ',' ',' ',' ',' ',' ','1',' ',' ',' ',' ','1'],
@@ -26,8 +27,11 @@ BOARD_RATIO = (len(MAP[0]), len(MAP))
 CHAR_SIZE = 32
 
 WIDTH, HEIGHT = (BOARD_RATIO[0] * CHAR_SIZE, BOARD_RATIO[1] * CHAR_SIZE)
+
 NAV_HEIGHT = 64
 
-PLAYER_SPEED = CHAR_SIZE // 4
+SCREEN_HEIGHT = HEIGHT + NAV_HEIGHT + NAV_HEIGHT
+SCREEN_WIDTH = WIDTH
 
+PLAYER_SPEED = CHAR_SIZE // 4
 GHOST_SPEED = 4
