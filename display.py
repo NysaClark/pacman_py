@@ -30,7 +30,7 @@ class Display:
 		life_x = CHAR_SIZE // 2
 		for _ in range(life):
 			self.screen.blit(life_image, (life_x, y_pos))
-			life_x += CHAR_SIZE
+			life_x += CHAR_SIZE + 6
 
 	def show_food(self, eaten_food, y_pos):
 		food_x = WIDTH - CHAR_SIZE // 2 - CHAR_SIZE # start from right
@@ -39,7 +39,7 @@ class Display:
 			food_image = pygame.transform.scale(food_image, (CHAR_SIZE, CHAR_SIZE))
 	 
 			self.screen.blit(food_image, (food_x, y_pos))
-			food_x -= CHAR_SIZE
+			food_x -= CHAR_SIZE + 6
 
 	# add game over message
 	def game_over(self):

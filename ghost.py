@@ -2,7 +2,8 @@
 import pygame
 import random
 import time
-from settings import WIDTH, CHAR_SIZE, GHOST_SPEED
+# from collections import deque
+from settings import WIDTH, CHAR_SIZE, GHOST_SPEED, MAP
 
 class Ghost(pygame.sprite.Sprite):
 	def __init__(self, row, col, color):
@@ -84,13 +85,12 @@ class Ghost(pygame.sprite.Sprite):
 		for key in self.keys:
 			if not self.is_collide(*self.directions[key], walls_collide_list):
 				available_moves.append(key)
-		
+			
 		randomizing = False if len(available_moves) <= 2 and self.direction != (0,0) else True
 		# 60% chance of randomizing ghost move
 		if randomizing and random.randrange( 0,100 ) <= 60:
 			self.moving_dir = random.choice(available_moves)
 			self.direction = self.directions[self.moving_dir]
-
 		if not self.is_collide(*self.direction, walls_collide_list):
 			self.rect.move_ip(self.direction)
 		else:

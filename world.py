@@ -197,17 +197,10 @@ class World:
 		# spawn 1 food @ random position
 		row, col = random.choice(possible_positions)
 
-		# TODO randomize food type
 		food_types = ["cherry", "strawberry", "orange", "pretzel", "apple", "pear", "banana"]
 		type_points = [100, 200, 500, 700, 1000, 2000, 5000]
 		type_max = self.game_level-1 if self.game_level < 7 else 6
-		# lvl 1: cherry	 	0 
-		# lvl 2: c, sb 		0 - 1
-		# lvl 3: c, sb, o	0 - 2
-		# etc...
-		# lvl 7+: all foods 0 - 6 
 		random_int = random.randint(0, type_max)
-		print(f"Food random int(0 - {type_max}) = {random_int}")
 		self.foods.add(Food(row, col, type=food_types[random_int], points=type_points[random_int]))
 		
 		self.spawned_food +=1
@@ -343,6 +336,5 @@ class World:
 				self.restart_game()
 
 
-# TODO add more food than cherries w/ increasing points
-	# (strawberry, orange, pretzel, apple, pear, banana)
+# TODO add timer to food
 # TODO make ghosts smarter based on lvl
